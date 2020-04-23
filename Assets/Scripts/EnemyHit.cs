@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyHit : MonoBehaviour
 {
-    public bool test;
+
     Rigidbody[] rigidbodies;
     Collider[] colliders;
 

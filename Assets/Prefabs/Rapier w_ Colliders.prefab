@@ -97,7 +97,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4179049697285763676}
-  - component: {fileID: 4179049697279657596}
   m_Layer: 0
   m_Name: Cross Collider
   m_TagString: Untagged
@@ -119,19 +118,6 @@ Transform:
   m_Father: {fileID: 4179049697285763678}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &4179049697279657596
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4179049697285795452}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.41, y: 0.24, z: 0.18}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4179049697285795454
 GameObject:
   m_ObjectHideFlags: 0
@@ -145,6 +131,7 @@ GameObject:
   - component: {fileID: 4179049697283862712}
   - component: {fileID: 4179049695763503230}
   - component: {fileID: 242074584}
+  - component: {fileID: 7382111116012140211}
   m_Layer: 0
   m_Name: Rapier w_ Colliders
   m_TagString: PlayerSword
@@ -244,3 +231,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4612b097244a9c345803e563945c7b54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &7382111116012140211
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4179049697285795454}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.03, y: 1.6533043, z: 0.06}
+  m_Center: {x: 3.4276035e-14, y: 0.6029903, z: 0}

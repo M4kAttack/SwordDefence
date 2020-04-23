@@ -18,10 +18,13 @@ public class PlayerSword : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        var enemy = collision.gameObject.transform.root;
-        if (enemy.CompareTag("Enemy"))
+        var root = collision.gameObject.transform.root;
+        if (root.CompareTag("Enemy"))
         {
-            enemy.GetComponent<EnemyHit>().KillEnemy();
+            root.GetComponent<EnemyHit>().KillEnemy();
+        } else if(collision.gameObject.CompareTag("PlayerSword"))
+        {
+            OVRInput.SetControllerVibration(1, 1, OVRInput.Controller.RTouch);
         }
     }
 }
