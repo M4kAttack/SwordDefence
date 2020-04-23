@@ -23,10 +23,11 @@ public class PlayerSword : MonoBehaviour
         var root = collision.gameObject.transform.root;
         if (root.CompareTag("Enemy"))
         {
+            hapticFeedback.Vibrate(1, 1, 0.2f, controller);
             root.GetComponent<EnemyHit>().KillEnemy();
         } else if(collision.gameObject.CompareTag("PlayerSword"))
         {
-            hapticFeedback.Vibrate(1,1,0.1f, controller);
+            hapticFeedback.Vibrate(0.5f, 0.5f, 0.1f, controller);
         }
     }
 }
