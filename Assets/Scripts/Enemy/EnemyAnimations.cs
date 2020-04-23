@@ -5,13 +5,17 @@ using UnityEngine;
 
 public class EnemyAnimations : MonoBehaviour
 {
+    private SoundHandler soundHandler;
+    private AudioSource runningSource;
     private MoveEnemy moveEnemy;
     private Animator animator;
     private EnemyType enemyType;
     // Start is called before the first frame update
     void Start()
     {
-        if(transform.name.Contains("Jump"))
+        runningSource = GetComponent<AudioSource>();
+        soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
+        if (transform.name.Contains("Jump"))
         {
             enemyType = EnemyType.Jumping;
         } else if(transform.name.Contains("Low"))
@@ -32,6 +36,7 @@ public class EnemyAnimations : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            runningSource.Stop();
             if (enemyType == EnemyType.Jumping)
             {
                 JumpAttack();
@@ -52,6 +57,7 @@ public class EnemyAnimations : MonoBehaviour
 
     private void JumpAttack()
     {
+        soundHandler.PlayJumpStart();
             var rand = UnityEngine.Random.Range(1, 3);
             if (rand == 1)
             {

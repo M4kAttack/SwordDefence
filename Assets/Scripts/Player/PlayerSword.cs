@@ -12,12 +12,6 @@ public class PlayerSword : MonoBehaviour
         hapticFeedback = transform.root.GetComponent<HapticFeedback>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         var root = collision.gameObject.transform.root;

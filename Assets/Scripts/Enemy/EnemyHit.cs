@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class EnemyHit : MonoBehaviour
 {
+    private GameEnemyManager gameEnemyManager;
+   private Rigidbody[] rigidbodies;
+   private Collider[] colliders;
 
-    Rigidbody[] rigidbodies;
-    Collider[] colliders;
-
-    Animator animator;
+   private Animator animator;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,7 +48,7 @@ public class EnemyHit : MonoBehaviour
             collider.enabled = false;
         }
         Invoke("DisableEnemy", 2f);
-
+        gameEnemyManager.ActiveEnemies--;
     }
 
     private void DisableEnemy()
