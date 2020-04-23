@@ -48,6 +48,7 @@ public class EnemyHit : MonoBehaviour
             collider.enabled = false;
         }
         Invoke("DisableEnemy", 2f);
+
     }
 
     private void DisableEnemy()
