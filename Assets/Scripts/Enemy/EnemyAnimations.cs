@@ -6,14 +6,13 @@ using UnityEngine;
 public class EnemyAnimations : MonoBehaviour
 {
     private SoundHandler soundHandler;
-    private AudioSource runningSource;
     private MoveEnemy moveEnemy;
     private Animator animator;
     private EnemyType enemyType;
     // Start is called before the first frame update
     void Start()
     {
-        runningSource = GetComponent<AudioSource>();
+     
         soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
         if (transform.name.Contains("Jump"))
         {
@@ -36,7 +35,7 @@ public class EnemyAnimations : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            runningSource.Stop();
+
             if (enemyType == EnemyType.Jumping)
             {
                 JumpAttack();

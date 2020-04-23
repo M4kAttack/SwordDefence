@@ -5,16 +5,26 @@ using UnityEngine;
 
 public class GameEnemyManager : MonoBehaviour
 {
+   
     public GameObject jumpingEnemy;
     public GameObject lowEnemy;
     private List<GameObject> enemies = new List<GameObject>();
     private int enemyListIndex = 0;
     private GameObject[] spawnPositions;
-    public int ActiveEnemies { get; set; } = 0;
+
+    private int enemiesKilled = 0;
+    public int activeEnemies = 0;
+    private int maxEnemies = 7;
     public int level { get; set; } = 1;
+
+
+    //SpawnTimer
+    private float spawnTime = 3f;
+    private float nextSpawn;
     // Start is called before the first frame update
     void Start()
     {
+
         for (int i = 0; i < 100; i++)
         {
             var newJumping = Instantiate(jumpingEnemy);
@@ -31,23 +41,30 @@ public class GameEnemyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (ActiveEnemies == 0)
-        {
-            level++;
-            SpawnEnemies();
-        } 
+   
+       
+            if(nextSpawn < Time.time && activeEnemies < maxEnemies)
+            {
+                nextSpawn = Time.time + spawnTime;
+                SpawnEnemy();
+            }
+
+
+
     }
-
-    private void SpawnEnemies()
+   
+    private void SpawnEnemy()
     {
-
-        for (int i = 0; i < level * 2; i++)
-        {
-            ActiveEnemies++;
+           activeEnemies++;
             var randomSpawn = UnityEngine.Random.Range(0, spawnPositions.Length);
             enemies[enemyListIndex].transform.position = spawnPositions[randomSpawn].transform.position;
             enemies[enemyListIndex].SetActive(true);
             enemyListIndex++;
-        }
+    }
+
+    internal void EnemyKilled()
+    {
+        enemiesKilled++;
+        activeEnemies--;
     }
 }

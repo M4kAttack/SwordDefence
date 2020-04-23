@@ -8,6 +8,9 @@ TagManager:
   - Enemy
   - SoundHandler
   - GameManager
+  - SpawnPosition
+  - GameManagers
+  - Arrow
   layers:
   - Default
   - TransparentFX

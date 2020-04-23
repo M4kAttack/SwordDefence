@@ -12,6 +12,7 @@ public class EnemyHit : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameEnemyManager = GameObject.FindGameObjectWithTag("GameManagers").GetComponent<GameEnemyManager>();
         animator = GetComponent<Animator>();
         colliders = GetComponentsInChildren<Collider>();
         rigidbodies = GetComponentsInChildren<Rigidbody>();
@@ -48,12 +49,12 @@ public class EnemyHit : MonoBehaviour
             collider.enabled = false;
         }
         Invoke("DisableEnemy", 2f);
-        gameEnemyManager.ActiveEnemies--;
+       
     }
 
     private void DisableEnemy()
     {
-
-       gameObject.SetActive(false);
+        gameEnemyManager.EnemyKilled();
+        gameObject.SetActive(false);
     }
 }
