@@ -22,14 +22,8 @@ public class EnemyHit : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        foreach (Transform tr in transform.GetComponentsInChildren<Transform>())
-        {
-            if (tr.tag == "Head")
-            {
-                head = tr.gameObject;
-            }
-        }
 
+        head = FindGameObject.FindChildByTag(gameObject, "Head");
         fXBloodSplatter = transform.Find("FX_BloodSplatter").gameObject;
         fXBloodSplatter.SetActive(false);
          scoreText = transform.Find("ScoreText").GetComponent<TextMeshPro>();

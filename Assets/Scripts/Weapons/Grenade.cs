@@ -7,7 +7,7 @@ using UnityEngine;
 public class Grenade : MonoBehaviour
 {
     //Timer 
-    private float explosionTime = 5;
+    private float explosionTime = 20;
     private float explode;
 
     private bool exploded = false;

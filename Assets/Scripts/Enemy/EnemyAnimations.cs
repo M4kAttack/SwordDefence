@@ -11,9 +11,12 @@ public class EnemyAnimations : MonoBehaviour
     private EnemyType enemyType;
     private GameObject player;
     private bool grenadeThrown = false;
+    private GameObject grenade;
+    private Rigidbody grenadeRigidbody;
     // Start is called before the first frame update
     void Start()
     {
+
         player = GameObject.FindGameObjectWithTag("Player");
            soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
         if (transform.name.Contains("Jump"))
@@ -22,6 +25,8 @@ public class EnemyAnimations : MonoBehaviour
         } else if(transform.name.Contains("Grenade"))
         {
             enemyType = EnemyType.Grenade;
+            grenade = FindGameObject.FindChildByTag(gameObject, "Grenade");
+            grenadeRigidbody = grenade.GetComponent<Rigidbody>();
         }
         animator = GetComponent<Animator>();
         moveEnemy = GetComponent<MoveEnemy>();
@@ -32,7 +37,7 @@ public class EnemyAnimations : MonoBehaviour
     {
         if(enemyType == EnemyType.Grenade && !grenadeThrown)
         {
-            if (Vector3.Distance(transform.position, player.transform.position) < 50)
+            if (Vector3.Distance(transform.position, player.transform.position) < 20)
             {
                 grenadeThrown = true;
                 animator.SetTrigger("ThrowGrenade");
@@ -66,5 +71,13 @@ public class EnemyAnimations : MonoBehaviour
                 moveEnemy.speed = 1.5f;
                 animator.SetTrigger("JumpAttack");
             }
+    }
+
+    public void ThrowGrenadeByEvent()
+    {
+        grenade.transform.parent = null;
+        grenadeRigidbody.isKinematic = false;
+        grenadeRigidbody.AddForce(-grenade.transform.forward * 12, ForceMode.VelocityChange);
+
     }
 }

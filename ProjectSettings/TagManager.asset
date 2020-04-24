@@ -15,6 +15,7 @@ TagManager:
   - Head
   - HeadShootComboBoard
   - BillBoard
+  - Grenade
   layers:
   - Default
   - TransparentFX
