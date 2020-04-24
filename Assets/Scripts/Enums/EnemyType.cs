@@ -2,6 +2,7 @@
 
 enum EnemyType
 {
-  Jumping,
-  Low
+  NoGrenade,
+  Grenade
 }
+

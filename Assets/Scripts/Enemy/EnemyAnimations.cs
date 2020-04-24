@@ -9,17 +9,19 @@ public class EnemyAnimations : MonoBehaviour
     private MoveEnemy moveEnemy;
     private Animator animator;
     private EnemyType enemyType;
+    private GameObject player;
+    private bool grenadeThrown = false;
     // Start is called before the first frame update
     void Start()
     {
-     
-        soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
+        player = GameObject.FindGameObjectWithTag("Player");
+           soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
         if (transform.name.Contains("Jump"))
         {
-            enemyType = EnemyType.Jumping;
-        } else if(transform.name.Contains("Low"))
+            enemyType = EnemyType.NoGrenade;
+        } else if(transform.name.Contains("Grenade"))
         {
-            enemyType = EnemyType.Low;
+            enemyType = EnemyType.Grenade;
         }
         animator = GetComponent<Animator>();
         moveEnemy = GetComponent<MoveEnemy>();
@@ -28,31 +30,27 @@ public class EnemyAnimations : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(enemyType == EnemyType.Grenade && !grenadeThrown)
+        {
+            if (Vector3.Distance(transform.position, player.transform.position) < 50)
+            {
+                grenadeThrown = true;
+                animator.SetTrigger("ThrowGrenade");
+            };
+        }
+     
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-
-            if (enemyType == EnemyType.Jumping)
-            {
                 JumpAttack();
-            }
 
-            if (enemyType == EnemyType.Low)
-            {
-                LowAttack();
-            }
         }
     }
 
-    private void LowAttack()
-    {
-        moveEnemy.speed = 1.5f;
-        animator.SetTrigger("DoubleLeg");
-    }
+   
 
     private void JumpAttack()
     {

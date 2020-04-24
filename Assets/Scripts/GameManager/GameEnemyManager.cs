@@ -7,7 +7,7 @@ public class GameEnemyManager : MonoBehaviour
 {
    
     public GameObject jumpingEnemy;
-    public GameObject lowEnemy;
+    public GameObject grenadeEnemy;
     private List<GameObject> enemies = new List<GameObject>();
     private int enemyListIndex = 0;
     private GameObject[] spawnPositions;
@@ -27,12 +27,12 @@ public class GameEnemyManager : MonoBehaviour
 
         for (int i = 0; i < 100; i++)
         {
-            var newJumping = Instantiate(jumpingEnemy);
-            newJumping.SetActive(false);
-            enemies.Add(newJumping);
-            var newLow = Instantiate(lowEnemy);
-            newLow.SetActive(false);
-            enemies.Add(newLow);
+            var newJumpingEnemy = Instantiate(jumpingEnemy);
+            newJumpingEnemy.SetActive(false);
+            enemies.Add(newJumpingEnemy);
+            var newGrenadeEnemy = Instantiate(grenadeEnemy);
+            newGrenadeEnemy.SetActive(false);
+            enemies.Add(newGrenadeEnemy);
         }
         spawnPositions = GameObject.FindGameObjectsWithTag("SpawnPosition");
 

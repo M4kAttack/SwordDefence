@@ -5,11 +5,13 @@ using UnityEngine;
 public class MoveEnemy : MonoBehaviour
 {
     public float speed = 3f;
+    private float originalSpeed;
     private Rigidbody rigidbody;
     private GameObject player;
     // Start is called before the first frame update
     void Start()
     {
+        originalSpeed = speed;
         player = GameObject.FindGameObjectWithTag("Player");
         rigidbody = GetComponent<Rigidbody>();
         transform.LookAt(player.transform);
@@ -20,5 +22,16 @@ public class MoveEnemy : MonoBehaviour
     {
         Vector3 movement = transform.forward * speed;
         rigidbody.velocity = new Vector3(movement.x, rigidbody.velocity.y, movement.z);
+    }
+
+
+    public void TurnOffSpeed()
+    {
+        speed = 0;
+    }
+
+    public void TurnOnSpeed()
+    {
+        speed = originalSpeed;
     }
 }

@@ -283,7 +283,7 @@ GameObject:
   - component: {fileID: 8417398765140269637}
   - component: {fileID: 8417398765140269639}
   m_Layer: 0
-  m_Name: LowAttackEnemy
+  m_Name: GrenadeAttackEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
