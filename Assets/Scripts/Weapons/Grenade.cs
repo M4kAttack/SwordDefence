@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Grenade : MonoBehaviour
 {
+
+    private Transform lookDirection;
     //Timer 
     private float explosionTime = 20;
     private float explode;
@@ -14,17 +16,17 @@ public class Grenade : MonoBehaviour
 
     private MeshRenderer meshRenderer;
     private GameObject fxExplosion;
-    private TextMeshPro timer;
     private float timeAtStart;
     private Collider damageZoneCollider;
+    private Rigidbody rigidbody;
     // Start is called before the first frame update
     void Start()
     {
-        damageZoneCollider = GetComponent<Collider>();
+        lookDirection = GameObject.FindGameObjectWithTag("Player").transform.Find("TrackingSpace/CenterEyeAnchor");
+        rigidbody = GetComponent<Rigidbody>();
+        damageZoneCollider = GetComponent<SphereCollider>();
         damageZoneCollider.enabled = false;
         meshRenderer = GetComponent<MeshRenderer>();
-        timeAtStart = Time.time;
-        timer = transform.Find("Timer").GetComponent<TextMeshPro>();
         fxExplosion = transform.Find("FX_Explosion").gameObject;
         fxExplosion.SetActive(false);
         explode = Time.time + explosionTime;
@@ -34,19 +36,15 @@ public class Grenade : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!exploded)
-        {
-            timer.text = Math.Round((explosionTime - (Time.time - timeAtStart))).ToString();
-        }
+
       
-        if (explode < Time.time)
+        if (transform.position.y < 0.05f && !exploded)
         {
             damageZoneCollider.enabled = true;
             exploded = true;
             meshRenderer.enabled = false;
             fxExplosion.SetActive(true);
             Invoke("DisableCollider", 1f);
-            timer.enabled = false;
         }
     }
     public void DisableCollider()
@@ -61,13 +59,19 @@ public class Grenade : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        var bodyPart = collision.gameObject;
-        var root = bodyPart.transform.root;
+        var gameobjectHit = collision.gameObject;
+        var root = gameobjectHit.transform.root;
 
         if (root.CompareTag("Enemy"))
         {
             var isHeadShot = true;
             root.GetComponent<EnemyHit>().KillEnemy(isHeadShot);
+        }
+
+        if(gameobjectHit.CompareTag("PlayerSword"))
+        {
+            transform.rotation = gameobjectHit.transform.rotation;
+            rigidbody.AddForce(lookDirection.forward * 20, ForceMode.VelocityChange);
         }
         
     }

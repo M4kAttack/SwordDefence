@@ -11,6 +11,7 @@ public class GameEnemyManager : MonoBehaviour
     private List<GameObject> enemies = new List<GameObject>();
     private int enemyListIndex = 0;
     private GameObject[] spawnPositions;
+    private int percentageOfGrenadeThrowers = 10;
 
     private int enemiesKilled = 0;
     public int activeEnemies = 0;
@@ -27,12 +28,16 @@ public class GameEnemyManager : MonoBehaviour
 
         for (int i = 0; i < 100; i++)
         {
-            var newJumpingEnemy = Instantiate(jumpingEnemy);
-            newJumpingEnemy.SetActive(false);
-            enemies.Add(newJumpingEnemy);
-            var newGrenadeEnemy = Instantiate(grenadeEnemy);
-            newGrenadeEnemy.SetActive(false);
-            enemies.Add(newGrenadeEnemy);
+            //var newJumpingEnemy = Instantiate(jumpingEnemy);
+            //newJumpingEnemy.SetActive(false);
+            //enemies.Add(newJumpingEnemy);
+            //if(i % percentageOfGrenadeThrowers == 0)
+            //{
+                var newGrenadeEnemy = Instantiate(grenadeEnemy);
+                newGrenadeEnemy.SetActive(false);
+                enemies.Add(newGrenadeEnemy);
+            //}
+ 
         }
         spawnPositions = GameObject.FindGameObjectsWithTag("SpawnPosition");
 

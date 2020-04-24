@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 242074584}
   - component: {fileID: 7382111116012140211}
   m_Layer: 0
-  m_Name: Rapier w_ Colliders
+  m_Name: Sword
   m_TagString: PlayerSword
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

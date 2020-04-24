@@ -16,6 +16,8 @@ TagManager:
   - HeadShootComboBoard
   - BillBoard
   - Grenade
+  - TennisRacket
+  - RightHandSkeletal
   layers:
   - Default
   - TransparentFX

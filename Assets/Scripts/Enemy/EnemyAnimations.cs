@@ -13,6 +13,7 @@ public class EnemyAnimations : MonoBehaviour
     private bool grenadeThrown = false;
     private GameObject grenade;
     private Rigidbody grenadeRigidbody;
+    private float grenadeThrowForce = 14;
     // Start is called before the first frame update
     void Start()
     {
@@ -77,7 +78,7 @@ public class EnemyAnimations : MonoBehaviour
     {
         grenade.transform.parent = null;
         grenadeRigidbody.isKinematic = false;
-        grenadeRigidbody.AddForce(-grenade.transform.forward * 12, ForceMode.VelocityChange);
+        grenadeRigidbody.AddForce(-grenade.transform.forward * grenadeThrowForce, ForceMode.VelocityChange);
 
     }
 }
