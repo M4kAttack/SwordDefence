@@ -1,18 +1,43 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class EnemyHit : MonoBehaviour
 {
-    private GameEnemyManager gameEnemyManager;
+   private ScoreGameManager scoreGameManager;
+   public int enemyDeathScore = 10;
+   private TextMeshPro scoreText;
+   private GameEnemyManager gameEnemyManager;
    private Rigidbody[] rigidbodies;
    private Collider[] colliders;
+
+   public GameObject head;
+    private GameObject fXBloodSplatter;
+
+    private bool dead = false;
 
    private Animator animator;
     // Start is called before the first frame update
     void Start()
     {
-        gameEnemyManager = GameObject.FindGameObjectWithTag("GameManagers").GetComponent<GameEnemyManager>();
+        foreach (Transform tr in transform.GetComponentsInChildren<Transform>())
+        {
+            if (tr.tag == "Head")
+            {
+                head = tr.gameObject;
+            }
+        }
+
+        fXBloodSplatter = transform.Find("FX_BloodSplatter").gameObject;
+        fXBloodSplatter.SetActive(false);
+         scoreText = transform.Find("ScoreText").GetComponent<TextMeshPro>();
+        scoreText.text = enemyDeathScore.ToString();
+        scoreText.enabled = false;
+        var managers = GameObject.FindGameObjectWithTag("GameManagers");
+        gameEnemyManager = managers.GetComponent<GameEnemyManager>();
+        scoreGameManager = managers.GetComponent<ScoreGameManager>();
         animator = GetComponent<Animator>();
         colliders = GetComponentsInChildren<Collider>();
         rigidbodies = GetComponentsInChildren<Rigidbody>();
@@ -25,31 +50,48 @@ public class EnemyHit : MonoBehaviour
                 rb.mass = 100;
             }
         }
-
-  
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
 
-    public void KillEnemy()
+
+    public void KillEnemy(bool isHeadShoot)
     {
-        animator.enabled = false;
-        foreach (var rb in rigidbodies)
+        if(!dead)
         {
-            rb.isKinematic = false;
+            dead = true;
+            ModifyScoreText(isHeadShoot);
+            if(isHeadShoot)
+            {
+                head.transform.localScale = Vector3.zero;
+                fXBloodSplatter.SetActive(true);
+            }
+   
+            animator.enabled = false;
+            foreach (var rb in rigidbodies)
+            {
+                rb.isKinematic = false;
+            }
+            foreach (var collider in colliders)
+            {
+                collider.enabled = false;
+            }
+            Invoke("DisableEnemy", 2f);
+
         }
-        foreach (var collider in colliders)
+    }
+
+    private void ModifyScoreText(bool isHeadShoot)
+    {
+        scoreGameManager.UpdateScore(enemyDeathScore, isHeadShoot);
+
+
+        if (scoreGameManager.headShootCounter > 0)
         {
-            collider.enabled = false;
+            enemyDeathScore = enemyDeathScore * scoreGameManager.headShootCounter;
+            scoreText.text = enemyDeathScore.ToString();
         }
-        Invoke("DisableEnemy", 2f);
-       
+
+        scoreText.enabled = true;
     }
 
     private void DisableEnemy()

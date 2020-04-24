@@ -11,6 +11,10 @@ TagManager:
   - SpawnPosition
   - GameManagers
   - Arrow
+  - ScoreBoard
+  - Head
+  - HeadShootComboBoard
+  - BillBoard
   layers:
   - Default
   - TransparentFX

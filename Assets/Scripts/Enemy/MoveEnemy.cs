@@ -16,9 +16,9 @@ public class MoveEnemy : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Vector3 movement = transform.forward * speed;
-      rigidbody.velocity = new Vector3(movement.x, rigidbody.velocity.y, movement.z);
+        rigidbody.velocity = new Vector3(movement.x, rigidbody.velocity.y, movement.z);
     }
 }

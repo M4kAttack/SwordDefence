@@ -14,11 +14,18 @@ public class PlayerSword : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        var root = collision.gameObject.transform.root;
+        var bodyPart = collision.gameObject;
+        var root = bodyPart.transform.root;
+        
         if (root.CompareTag("Enemy"))
         {
             hapticFeedback.Vibrate(1, 1, 0.2f, controller);
-            root.GetComponent<EnemyHit>().KillEnemy();
+            var isHeadShot = false;
+            if(bodyPart.CompareTag("Head"))
+            {
+                isHeadShot = true;
+            }
+            root.GetComponent<EnemyHit>().KillEnemy(isHeadShot);
         } else if(collision.gameObject.CompareTag("PlayerSword"))
         {
             hapticFeedback.Vibrate(0.5f, 0.5f, 0.1f, controller);

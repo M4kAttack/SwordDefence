@@ -19,12 +19,18 @@ public class Arrow : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        var root = collision.gameObject.transform.root;
+        var bodyPart = collision.gameObject;
+        var root = bodyPart.transform.root;
+
         if (root.CompareTag("Enemy"))
         {
-            root.GetComponent<EnemyHit>().KillEnemy();
-            gameObject.SetActive(false);
+            var isHeadShot = false;
+            if (bodyPart.CompareTag("Head"))
+            {
+                isHeadShot = true;
+            }
+            root.GetComponent<EnemyHit>().KillEnemy(isHeadShot);
         }
- 
+
     }
 }
