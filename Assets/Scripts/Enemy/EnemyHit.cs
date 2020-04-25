@@ -9,7 +9,7 @@ public class EnemyHit : MonoBehaviour
    private ScoreGameManager scoreGameManager;
    public int enemyDeathScore = 10;
    private TextMeshPro scoreText;
-   private GameEnemyManager gameEnemyManager;
+   private EnemyGameManager gameEnemyManager;
    private Rigidbody[] rigidbodies;
    private Collider[] colliders;
 
@@ -30,7 +30,7 @@ public class EnemyHit : MonoBehaviour
         scoreText.text = enemyDeathScore.ToString();
         scoreText.enabled = false;
         var managers = GameObject.FindGameObjectWithTag("GameManagers");
-        gameEnemyManager = managers.GetComponent<GameEnemyManager>();
+        gameEnemyManager = managers.GetComponent<EnemyGameManager>();
         scoreGameManager = managers.GetComponent<ScoreGameManager>();
         animator = GetComponent<Animator>();
         colliders = GetComponentsInChildren<Collider>();

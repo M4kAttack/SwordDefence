@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameEnemyManager : MonoBehaviour
+public class EnemyGameManager : MonoBehaviour
 {
    
     public GameObject jumpingEnemy;
@@ -28,16 +28,16 @@ public class GameEnemyManager : MonoBehaviour
 
         for (int i = 0; i < 100; i++)
         {
-            //var newJumpingEnemy = Instantiate(jumpingEnemy);
-            //newJumpingEnemy.SetActive(false);
-            //enemies.Add(newJumpingEnemy);
-            //if(i % percentageOfGrenadeThrowers == 0)
-            //{
+            var newJumpingEnemy = Instantiate(jumpingEnemy);
+            newJumpingEnemy.SetActive(false);
+            enemies.Add(newJumpingEnemy);
+            if (i % percentageOfGrenadeThrowers == 0)
+            {
                 var newGrenadeEnemy = Instantiate(grenadeEnemy);
                 newGrenadeEnemy.SetActive(false);
                 enemies.Add(newGrenadeEnemy);
-            //}
- 
+            }
+
         }
         spawnPositions = GameObject.FindGameObjectsWithTag("SpawnPosition");
 
@@ -60,16 +60,27 @@ public class GameEnemyManager : MonoBehaviour
    
     private void SpawnEnemy()
     {
+        if(enemyListIndex < enemies.Count -1)
+        {
            activeEnemies++;
             var randomSpawn = UnityEngine.Random.Range(0, spawnPositions.Length);
             enemies[enemyListIndex].transform.position = spawnPositions[randomSpawn].transform.position;
             enemies[enemyListIndex].SetActive(true);
             enemyListIndex++;
+        } else
+        {
+            NextLevel();
+        }
     }
 
     internal void EnemyKilled()
     {
         enemiesKilled++;
         activeEnemies--;
+    }
+
+    private void NextLevel()
+    {
+        throw new NotFiniteNumberException();
     }
 }

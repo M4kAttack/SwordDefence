@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    private GameEnemyManager gameEnemyManager;
+    private EnemyGameManager gameEnemyManager;
     // Start is called before the first frame update
     void Start()
     {
-        gameEnemyManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameEnemyManager>();
+        gameEnemyManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EnemyGameManager>();
     }
 
     // Update is called once per frame

@@ -60,7 +60,7 @@ public class EnemyAnimations : MonoBehaviour
 
     private void JumpAttack()
     {
-        soundHandler.PlayJumpStart();
+            soundHandler.PlayJumpStart(transform.position);
             var rand = UnityEngine.Random.Range(1, 3);
             if (rand == 1)
             {

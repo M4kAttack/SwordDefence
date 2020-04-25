@@ -7,18 +7,14 @@ public class HandController : MonoBehaviour
     private GameObject LightSabre;
     private GameObject crossbow;
     public OVRInput.Controller controller;
-    private Animator animator;
     // Start is called before the first frame update
     void Start()
     {
-
-
         LightSabre = transform.Find("LightSabre").gameObject;
         crossbow = transform.Find("Crossbow").gameObject;
         if(controller == OVRInput.Controller.RTouch)
         {
             LightSabre.SetActive(false);
-            animator = GameObject.FindGameObjectWithTag("RightHandSkeletal").GetComponent<Animator>();
         } else
         {
             crossbow.SetActive(false);
@@ -28,17 +24,19 @@ public class HandController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-
-            if(OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
+        //switch hands
+        if(OVRInput.GetDown(OVRInput.Button.PrimaryThumbstickLeft, controller) || OVRInput.GetDown(OVRInput.Button.PrimaryThumbstickRight, controller))
+        {
+            if(LightSabre.activeSelf)
             {
-            animator.SetBool("PullingTrigger", true);
+                LightSabre.SetActive(false);
+                crossbow.SetActive(true);
+            } else
+            {
+                LightSabre.SetActive(true);
+                crossbow.SetActive(false);
             }
-           if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
-           {
-            animator.SetBool("PullingTrigger", false);
-           }
-
-
+        }
     }
 
 }

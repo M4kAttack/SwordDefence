@@ -18,6 +18,7 @@ TagManager:
   - Grenade
   - TennisRacket
   - RightHandSkeletal
+  - Crossbow
   layers:
   - Default
   - TransparentFX

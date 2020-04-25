@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Grenade : MonoBehaviour
 {
-
+    private SoundHandler soundHandler;
     private Transform lookDirection;
     //Timer 
     private float explosionTime = 20;
@@ -22,6 +22,7 @@ public class Grenade : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
         lookDirection = GameObject.FindGameObjectWithTag("Player").transform.Find("TrackingSpace/CenterEyeAnchor");
         rigidbody = GetComponent<Rigidbody>();
         damageZoneCollider = GetComponent<SphereCollider>();
@@ -30,7 +31,7 @@ public class Grenade : MonoBehaviour
         fxExplosion = transform.Find("FX_Explosion").gameObject;
         fxExplosion.SetActive(false);
         explode = Time.time + explosionTime;
-        Invoke("Disable", explosionTime + 2);
+
     }
 
     // Update is called once per frame
@@ -40,11 +41,13 @@ public class Grenade : MonoBehaviour
       
         if (transform.position.y < 0.05f && !exploded)
         {
+            soundHandler.PlayExplosion(transform.position);
             damageZoneCollider.enabled = true;
             exploded = true;
             meshRenderer.enabled = false;
             fxExplosion.SetActive(true);
-            Invoke("DisableCollider", 1f);
+            Invoke("DisableCollider", 0.1f);
+            Invoke("Disable", 1f);
         }
     }
     public void DisableCollider()

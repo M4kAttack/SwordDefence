@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Crossbow : MonoBehaviour
 {
+    private SoundHandler soundHandler;
     public OVRInput.Controller controller;
     public GameObject arrow;
     private GameObject animationArrow;
@@ -16,12 +17,16 @@ public class Crossbow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
         hapticFeedback = transform.root.GetComponent<HapticFeedback>();
         animator = GetComponent<Animator>();
         animationArrow = transform.Find("arrow").gameObject;
         forcePosition = transform.Find("ForcePosition");
     }
-
+    private void OnEnable()
+    {
+        canFire = true;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -35,6 +40,7 @@ public class Crossbow : MonoBehaviour
 
     public void FireArrowByEvent()
     {
+        soundHandler.PlayCrossBowShoot(GetComponent<Crossbow>());
         animationArrow.SetActive(false);
         var newArrow = Instantiate(arrow);
         newArrow.transform.position = animationArrow.transform.position;
