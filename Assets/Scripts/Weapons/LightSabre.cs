@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSword : MonoBehaviour
+public class LightSabre : MonoBehaviour
 {
+    private SoundHandler soundHandler;
     public OVRInput.Controller controller;
     private HapticFeedback hapticFeedback;
+    private LightSabre thisLightSabre;
     // Start is called before the first frame update
     void Start()
     {
+        thisLightSabre = GetComponent<LightSabre>();
+        soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
         hapticFeedback = transform.root.GetComponent<HapticFeedback>();
     }
 
@@ -26,9 +30,10 @@ public class PlayerSword : MonoBehaviour
                 isHeadShot = true;
             }
             root.GetComponent<EnemyHit>().KillEnemy(isHeadShot);
-        } else if(collision.gameObject.CompareTag("PlayerSword"))
+        } else if(collision.gameObject.CompareTag("LightSabre"))
         {
             hapticFeedback.Vibrate(0.5f, 0.5f, 0.1f, controller);
         }
+        soundHandler.PlayLaserHit(thisLightSabre);
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Grenade : MonoBehaviour
 {
+    private HapticFeedback hapticFeedback;
     private SoundHandler soundHandler;
     private Transform lookDirection;
     //Timer 
@@ -16,12 +17,12 @@ public class Grenade : MonoBehaviour
 
     private MeshRenderer meshRenderer;
     private GameObject fxExplosion;
-    private float timeAtStart;
     private Collider damageZoneCollider;
     private Rigidbody rigidbody;
     // Start is called before the first frame update
     void Start()
     {
+        hapticFeedback = transform.root.GetComponent<HapticFeedback>();
         soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
         lookDirection = GameObject.FindGameObjectWithTag("Player").transform.Find("TrackingSpace/CenterEyeAnchor");
         rigidbody = GetComponent<Rigidbody>();
@@ -71,8 +72,9 @@ public class Grenade : MonoBehaviour
             root.GetComponent<EnemyHit>().KillEnemy(isHeadShot);
         }
 
-        if(gameobjectHit.CompareTag("PlayerSword"))
+        if(gameobjectHit.CompareTag("LightSabre"))
         {
+            hapticFeedback.Vibrate(1f, 1f, 1f, gameobjectHit.GetComponent<LightSabre>().controller);
             transform.rotation = gameobjectHit.transform.rotation;
             rigidbody.AddForce(lookDirection.forward * 20, ForceMode.VelocityChange);
         }

@@ -31,6 +31,6 @@ public class Arrow : MonoBehaviour
             }
             root.GetComponent<EnemyHit>().KillEnemy(isHeadShot);
         }
-
+        gameObject.SetActive(false);
     }
 }

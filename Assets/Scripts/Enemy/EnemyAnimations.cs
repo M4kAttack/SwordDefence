@@ -19,7 +19,7 @@ public class EnemyAnimations : MonoBehaviour
     {
 
         player = GameObject.FindGameObjectWithTag("Player");
-           soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
+        soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
         if (transform.name.Contains("Jump"))
         {
             enemyType = EnemyType.NoGrenade;

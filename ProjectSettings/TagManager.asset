@@ -19,6 +19,7 @@ TagManager:
   - TennisRacket
   - RightHandSkeletal
   - Crossbow
+  - LightSabre
   layers:
   - Default
   - TransparentFX

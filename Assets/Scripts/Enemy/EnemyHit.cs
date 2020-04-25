@@ -6,12 +6,14 @@ using UnityEngine;
 
 public class EnemyHit : MonoBehaviour
 {
+   private SoundHandler soundHandler;
    private ScoreGameManager scoreGameManager;
    public int enemyDeathScore = 10;
    private TextMeshPro scoreText;
    private EnemyGameManager gameEnemyManager;
    private Rigidbody[] rigidbodies;
    private Collider[] colliders;
+    private AudioSource audioSource;
 
    public GameObject head;
     private GameObject fXBloodSplatter;
@@ -22,11 +24,14 @@ public class EnemyHit : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.spatialBlend = 1;
+        audioSource.volume = 1f;
         head = FindGameObject.FindChildByTag(gameObject, "Head");
         fXBloodSplatter = transform.Find("FX_BloodSplatter").gameObject;
         fXBloodSplatter.SetActive(false);
-         scoreText = transform.Find("ScoreText").GetComponent<TextMeshPro>();
+        scoreText = transform.Find("ScoreText").GetComponent<TextMeshPro>();
         scoreText.text = enemyDeathScore.ToString();
         scoreText.enabled = false;
         var managers = GameObject.FindGameObjectWithTag("GameManagers");
@@ -56,6 +61,7 @@ public class EnemyHit : MonoBehaviour
             ModifyScoreText(isHeadShoot);
             if(isHeadShoot)
             {
+                soundHandler.PlayEnemyHeadShot(audioSource);
                 head.transform.localScale = Vector3.zero;
                 fXBloodSplatter.SetActive(true);
             }
