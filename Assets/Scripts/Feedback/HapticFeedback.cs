@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class HapticFeedback : MonoBehaviour
 {
@@ -8,14 +6,15 @@ public class HapticFeedback : MonoBehaviour
 
     private float vibrateTime = 0;
     private float stopVibrate;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+
 
     // Update is called once per frame
     void Update()
+    {
+        StopVibration();
+    }
+
+    private void StopVibration()
     {
         if (vibrate && stopVibrate < Time.time)
         {
@@ -27,9 +26,13 @@ public class HapticFeedback : MonoBehaviour
 
     public void Vibrate(float frequency, float amplitude, float time, OVRInput.Controller controller)
     {
+        var valid = ControllerCheck.ValidControllerDontThrow(controller);
+        if (valid)
+        {
         vibrateTime = time;
         stopVibrate = Time.time + vibrateTime;
         vibrate = true;
         OVRInput.SetControllerVibration(frequency, frequency, controller);
+        }
     }
 }

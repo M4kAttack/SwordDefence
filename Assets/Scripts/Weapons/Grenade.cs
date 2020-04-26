@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Grenade : MonoBehaviour
 {
@@ -17,19 +13,52 @@ public class Grenade : MonoBehaviour
 
     private MeshRenderer meshRenderer;
     private GameObject fxExplosion;
-    private Collider damageZoneCollider;
+    private Collider blastRadius;
     private Rigidbody rigidbody;
+    private GameObject player;
     // Start is called before the first frame update
     void Start()
     {
-        hapticFeedback = transform.root.GetComponent<HapticFeedback>();
-        soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
-        lookDirection = GameObject.FindGameObjectWithTag("Player").transform.Find("TrackingSpace/CenterEyeAnchor");
-        rigidbody = GetComponent<Rigidbody>();
-        damageZoneCollider = GetComponent<SphereCollider>();
-        damageZoneCollider.enabled = false;
-        meshRenderer = GetComponent<MeshRenderer>();
-        fxExplosion = transform.Find("FX_Explosion").gameObject;
+        if(player == null)
+        { 
+            player = GameObject.FindGameObjectWithTag("Player");
+            NullCheck.CheckIfNull(player, typeof(GameObject), this, "GameObject");
+        }
+        if(hapticFeedback == null)
+        {
+            hapticFeedback = player.GetComponent<HapticFeedback>();
+            NullCheck.CheckIfNull(hapticFeedback, typeof(HapticFeedback), this);
+        }
+        if(soundHandler == null)
+        {
+            soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
+            NullCheck.CheckIfNull(soundHandler, typeof(SoundHandler), this);
+        }
+        lookDirection = player.transform.Find("TrackingSpace/CenterEyeAnchor");
+        NullCheck.CheckIfNull(lookDirection, typeof(GameObject), this, "CenterEyeAnchor");
+        if (rigidbody == null)
+        {
+            rigidbody = GetComponent<Rigidbody>();
+            NullCheck.CheckIfNull(rigidbody, typeof(Rigidbody), this);
+        }
+        if(blastRadius == null)
+        {
+            blastRadius = GetComponent<SphereCollider>();
+            NullCheck.CheckIfNull(blastRadius, typeof(SphereCollider), this);
+        }
+        blastRadius.enabled = false;
+
+        if(meshRenderer == null)
+        {
+            meshRenderer = GetComponent<MeshRenderer>();
+            NullCheck.CheckIfNull(meshRenderer, typeof(MeshRenderer), this);
+        }
+       if(fxExplosion == null)
+        {
+           var temp = transform.Find("FX_Explosion");
+            NullCheck.CheckIfNull(temp, typeof(Transform), this, "FX_Explosion");
+            fxExplosion = temp.gameObject;
+        }
         fxExplosion.SetActive(false);
         explode = Time.time + explosionTime;
 
@@ -38,22 +67,20 @@ public class Grenade : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-      
         if (transform.position.y < 0.05f && !exploded)
         {
             soundHandler.PlayExplosion(transform.position);
-            damageZoneCollider.enabled = true;
+            blastRadius.enabled = true;
             exploded = true;
             meshRenderer.enabled = false;
             fxExplosion.SetActive(true);
-            Invoke("DisableCollider", 0.1f);
+            Invoke("DisbaleBlastRadius", 0.1f);
             Invoke("Disable", 1f);
         }
     }
-    public void DisableCollider()
+    public void DisbaleBlastRadius()
     {
-        damageZoneCollider.enabled = false;
+        blastRadius.enabled = false;
     }
 
     public void Disable()
@@ -69,15 +96,23 @@ public class Grenade : MonoBehaviour
         if (root.CompareTag("Enemy"))
         {
             var isHeadShot = true;
-            root.GetComponent<EnemyHit>().KillEnemy(isHeadShot);
+            var enemyHit = root.GetComponent<EnemyHit>();
+            if(enemyHit != null)
+            {
+                enemyHit.KillEnemy(isHeadShot);
+            }
+          
         }
 
         if(gameobjectHit.CompareTag("LightSabre"))
         {
-            hapticFeedback.Vibrate(1f, 1f, 1f, gameobjectHit.GetComponent<LightSabre>().controller);
-            transform.rotation = gameobjectHit.transform.rotation;
-            rigidbody.AddForce(lookDirection.forward * 20, ForceMode.VelocityChange);
+            var lightSabre = gameobjectHit.GetComponent<LightSabre>();
+            if(lightSabre != null)
+            {
+                hapticFeedback.Vibrate(1f, 1f, 1f, lightSabre.controller);
+                transform.rotation = gameobjectHit.transform.rotation;
+                rigidbody.AddForce(lookDirection.forward * 20, ForceMode.VelocityChange);
+            }
         }
-        
     }
 }

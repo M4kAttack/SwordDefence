@@ -17,11 +17,37 @@ public class Crossbow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
-        hapticFeedback = transform.root.GetComponent<HapticFeedback>();
-        animator = GetComponent<Animator>();
-        animationArrow = transform.Find("arrow").gameObject;
-        forcePosition = transform.Find("ForcePosition");
+        NullCheck.CheckIfNull(arrow, typeof(GameObject), this, "Arrow");
+        NullCheck.CheckIfNull(arrow.GetComponent<Rigidbody>(), typeof(Rigidbody), this);
+        ControllerCheck.ValidControllerThrow(controller, this);
+        if (soundHandler == null)
+        {
+            soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
+            NullCheck.CheckIfNull(soundHandler, typeof(SoundHandler), this);
+        }
+        if(hapticFeedback == null)
+        {
+            hapticFeedback = transform.root.GetComponent<HapticFeedback>();
+            NullCheck.CheckIfNull(hapticFeedback, typeof(HapticFeedback), this);
+       
+        }
+        if(animator == null)
+        {
+            animator = GetComponent<Animator>();
+            NullCheck.CheckIfNull(animator, typeof(Animator), this);
+        }
+        if(animationArrow == null)
+        {
+            var temp = transform.Find("arrow");
+            NullCheck.CheckIfNull(temp, typeof(GameObject), this, "arrow");
+            animationArrow = temp.gameObject;
+        }
+         if(forcePosition == null)
+        {
+            forcePosition = transform.Find("ForcePosition");
+            NullCheck.CheckIfNull(forcePosition, typeof(GameObject), this, "ForcePosition");
+        }
+     
     }
     private void OnEnable()
     {
@@ -40,7 +66,7 @@ public class Crossbow : MonoBehaviour
 
     public void FireArrowByEvent()
     {
-        soundHandler.PlayCrossBowShoot(GetComponent<Crossbow>());
+        soundHandler.PlayCrossBowShoot(this);
         animationArrow.SetActive(false);
         var newArrow = Instantiate(arrow);
         newArrow.transform.position = animationArrow.transform.position;

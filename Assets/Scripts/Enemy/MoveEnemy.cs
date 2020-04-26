@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MoveEnemy : MonoBehaviour
 {
@@ -12,8 +10,16 @@ public class MoveEnemy : MonoBehaviour
     void Start()
     {
         originalSpeed = speed;
-        player = GameObject.FindGameObjectWithTag("Player");
-        rigidbody = GetComponent<Rigidbody>();
+        if(player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+            NullCheck.CheckIfNull(player, typeof(GameObject), this, "Player");
+        }
+        if(rigidbody == null)
+        {
+            rigidbody = GetComponent<Rigidbody>();
+            NullCheck.CheckIfNull(rigidbody, typeof(Rigidbody), this);
+        }
         transform.LookAt(player.transform);
     }
 

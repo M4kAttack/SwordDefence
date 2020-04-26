@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +10,7 @@ public class EnemyGameManager : MonoBehaviour
     private List<GameObject> enemies = new List<GameObject>();
     private int enemyListIndex = 0;
     private GameObject[] spawnPositions;
-    private int percentageOfGrenadeThrowers = 10;
+    private int percentageOfGrenadeThrowers = 5;
 
     private int enemiesKilled = 0;
     public int activeEnemies = 0;
@@ -25,8 +24,24 @@ public class EnemyGameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        NullCheck.CheckIfNull(jumpingEnemy, typeof(GameObject), this, "jumpingEnemy");
+        NullCheck.CheckIfNull(grenadeEnemy, typeof(GameObject), this, "grenadeEnemy");
+        InitializeEnemies(100, percentageOfGrenadeThrowers);
+        if (spawnPositions == null)
+        {
+            spawnPositions = GameObject.FindGameObjectsWithTag("SpawnPosition");
 
-        for (int i = 0; i < 100; i++)
+            if(spawnPositions.Length == 0)
+            {
+                throw new MissingComponentException($"Spawnpositions are missing in EnemyGameManager");
+            }
+        }
+
+    }
+
+    public void InitializeEnemies(int amount, int percentageOfGrenadeThrowers)
+    {
+        for (int i = 0; i < amount; i++)
         {
             var newJumpingEnemy = Instantiate(jumpingEnemy);
             newJumpingEnemy.SetActive(false);
@@ -37,25 +52,17 @@ public class EnemyGameManager : MonoBehaviour
                 newGrenadeEnemy.SetActive(false);
                 enemies.Add(newGrenadeEnemy);
             }
-
         }
-        spawnPositions = GameObject.FindGameObjectsWithTag("SpawnPosition");
-
     }
 
     // Update is called once per frame
     void Update()
     {
-   
-       
             if(nextSpawn < Time.time && activeEnemies < maxEnemies)
             {
                 nextSpawn = Time.time + spawnTime;
                 SpawnEnemy();
             }
-
-
-
     }
    
     private void SpawnEnemy()
@@ -81,6 +88,6 @@ public class EnemyGameManager : MonoBehaviour
 
     private void NextLevel()
     {
-        throw new NotFiniteNumberException();
+        throw new NotImplementedException();
     }
 }

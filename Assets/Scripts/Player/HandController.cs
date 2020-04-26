@@ -1,20 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class HandController : MonoBehaviour
 {
-    private GameObject LightSabre;
+    private GameObject lightSabre;
     private GameObject crossbow;
     public OVRInput.Controller controller;
     // Start is called before the first frame update
     void Start()
     {
-        LightSabre = transform.Find("LightSabre").gameObject;
-        crossbow = transform.Find("Crossbow").gameObject;
-        if(controller == OVRInput.Controller.RTouch)
+        if(lightSabre == null)
         {
-            LightSabre.SetActive(false);
+            lightSabre = transform.Find("LightSabre").gameObject;
+        }
+        if(crossbow == null)
+        {
+            crossbow = transform.Find("Crossbow").gameObject;
+        }
+        ControllerCheck.ValidControllerThrow(controller, this);
+        if (controller == OVRInput.Controller.RTouch)
+        {
+            lightSabre.SetActive(false);
         } else
         {
             crossbow.SetActive(false);
@@ -24,19 +29,23 @@ public class HandController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        //switch hands
-        if(OVRInput.GetDown(OVRInput.Button.PrimaryThumbstickLeft, controller) || OVRInput.GetDown(OVRInput.Button.PrimaryThumbstickRight, controller))
+        SwitchWeapon();
+    }
+
+    private void SwitchWeapon()
+    {
+        if (OVRInput.GetDown(OVRInput.Button.PrimaryThumbstickLeft, controller) || OVRInput.GetDown(OVRInput.Button.PrimaryThumbstickRight, controller))
         {
-            if(LightSabre.activeSelf)
+            if (lightSabre.activeSelf)
             {
-                LightSabre.SetActive(false);
+                lightSabre.SetActive(false);
                 crossbow.SetActive(true);
-            } else
+            }
+            else
             {
-                LightSabre.SetActive(true);
+                lightSabre.SetActive(true);
                 crossbow.SetActive(false);
             }
         }
     }
-
 }

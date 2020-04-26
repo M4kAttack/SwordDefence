@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyAnimations : MonoBehaviour
 {
@@ -17,34 +14,56 @@ public class EnemyAnimations : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+            NullCheck.CheckIfNull(player, typeof(GameObject), this, "Player");
+        }
+        if(soundHandler == null)
+        {
+            soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
+            NullCheck.CheckIfNull(soundHandler, typeof(SoundHandler), this);
+        }
 
-        player = GameObject.FindGameObjectWithTag("Player");
-        soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
-        if (transform.name.Contains("Jump"))
+        grenade = FindGameObject.FindChildByTag(gameObject, "Grenade");
+        if (grenade == null)
         {
             enemyType = EnemyType.NoGrenade;
-        } else if(transform.name.Contains("Grenade"))
+        } else
         {
             enemyType = EnemyType.Grenade;
-            grenade = FindGameObject.FindChildByTag(gameObject, "Grenade");
             grenadeRigidbody = grenade.GetComponent<Rigidbody>();
+            NullCheck.CheckIfNull(grenadeRigidbody, typeof(Rigidbody), this);
         }
-        animator = GetComponent<Animator>();
-        moveEnemy = GetComponent<MoveEnemy>();
+        if(animator == null)
+        {
+            animator = GetComponent<Animator>();
+            NullCheck.CheckIfNull(animator, typeof(Animator), this);
+        }
+        if(moveEnemy == null)
+        {
+            moveEnemy = GetComponent<MoveEnemy>();
+            NullCheck.CheckIfNull(moveEnemy, typeof(MoveEnemy), this);
+        }
+      
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(enemyType == EnemyType.Grenade && !grenadeThrown)
+        if (enemyType == EnemyType.Grenade && !grenadeThrown)
         {
+            ThrowGrenade();
+        }
+    }
+
+    private void ThrowGrenade()
+    {
             if (Vector3.Distance(transform.position, player.transform.position) < 20)
             {
                 grenadeThrown = true;
                 animator.SetTrigger("ThrowGrenade");
             };
-        }
-     
     }
 
     private void OnTriggerEnter(Collider other)
@@ -52,7 +71,6 @@ public class EnemyAnimations : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
                 JumpAttack();
-
         }
     }
 
@@ -79,6 +97,5 @@ public class EnemyAnimations : MonoBehaviour
         grenade.transform.parent = null;
         grenadeRigidbody.isKinematic = false;
         grenadeRigidbody.AddForce(-grenade.transform.forward * grenadeThrowForce, ForceMode.VelocityChange);
-
     }
 }

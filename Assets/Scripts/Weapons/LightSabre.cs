@@ -11,9 +11,38 @@ public class LightSabre : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        thisLightSabre = GetComponent<LightSabre>();
-        soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
-        hapticFeedback = transform.root.GetComponent<HapticFeedback>();
+        ControllerCheck.ValidControllerThrow(controller, this);
+        if (thisLightSabre == null)
+        {
+            thisLightSabre = GetComponent<LightSabre>();
+            NullCheck.CheckIfNull(thisLightSabre, typeof(LightSabre), this);
+        }
+        if(soundHandler == null)
+        {
+            soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
+            NullCheck.CheckIfNull(soundHandler, typeof(SoundHandler), this);
+        }
+        if(hapticFeedback == null)
+        {
+            hapticFeedback = transform.root.GetComponent<HapticFeedback>();
+            NullCheck.CheckIfNull(hapticFeedback, typeof(HapticFeedback), this);
+        }
+    }
+
+    private void Update()
+    {
+        LightSabreVelocity();
+
+    }
+
+    private void LightSabreVelocity()
+    {
+        var velocity = OVRInput.GetLocalControllerAngularVelocity(controller).magnitude;
+        //0.4f
+        if (velocity > 7f)
+        {
+            soundHandler.PlayLightsabreMove(thisLightSabre);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -23,13 +52,18 @@ public class LightSabre : MonoBehaviour
         
         if (root.CompareTag("Enemy"))
         {
+            var enemyHit = root.GetComponent<EnemyHit>();
+            if (enemyHit != null)
+            {
             hapticFeedback.Vibrate(1, 1, 0.2f, controller);
             var isHeadShot = false;
             if(bodyPart.CompareTag("Head"))
             {
                 isHeadShot = true;
             }
-            root.GetComponent<EnemyHit>().KillEnemy(isHeadShot);
+      
+                enemyHit.KillEnemy(isHeadShot);
+            }
         } else if(collision.gameObject.CompareTag("LightSabre"))
         {
             hapticFeedback.Vibrate(0.5f, 0.5f, 0.1f, controller);

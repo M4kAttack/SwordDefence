@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
@@ -24,12 +22,17 @@ public class Arrow : MonoBehaviour
 
         if (root.CompareTag("Enemy"))
         {
-            var isHeadShot = false;
+            var enemyHit = root.GetComponent<EnemyHit>();
+            if (enemyHit != null)
+            {
+                var isHeadShot = false;
             if (bodyPart.CompareTag("Head"))
             {
                 isHeadShot = true;
             }
-            root.GetComponent<EnemyHit>().KillEnemy(isHeadShot);
+          
+                enemyHit.KillEnemy(isHeadShot);
+            }
         }
         gameObject.SetActive(false);
     }

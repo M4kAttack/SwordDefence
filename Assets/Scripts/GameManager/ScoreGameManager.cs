@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 public class ScoreGameManager : MonoBehaviour
@@ -8,6 +6,7 @@ public class ScoreGameManager : MonoBehaviour
     private TextMeshPro scoreText;
     private TextMeshPro headShootComboText; 
     private TextMeshPro staticHeadShootComboText;
+    private GameObject billboard;
     public int Score { get; set; } = 0;
     private float originalScoreFontSize;
     private float originalComboFontSize;
@@ -17,10 +16,26 @@ public class ScoreGameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var BillBoard = GameObject.FindGameObjectWithTag("BillBoard");
-        scoreText = BillBoard.transform.Find("ScoreText").GetComponent<TextMeshPro>();
-        headShootComboText = BillBoard.transform.Find("ComboText").GetComponent<TextMeshPro>(); 
-        staticHeadShootComboText = BillBoard.transform.Find("StaticComboText").GetComponent<TextMeshPro>();
+        if (billboard == null)
+        {
+            billboard = GameObject.FindGameObjectWithTag("BillBoard");
+            NullCheck.CheckIfNull(billboard, typeof(GameObject), this, "BillBoard");
+        }    
+       if (scoreText == null)
+        {
+            scoreText = billboard.transform.Find("ScoreText").GetComponent<TextMeshPro>();
+             NullCheck.CheckIfNull(scoreText, typeof(TextMeshPro), this, "ScoreText");
+        }
+       if(headShootComboText == null)
+        {
+            headShootComboText = billboard.transform.Find("ComboText").GetComponent<TextMeshPro>();
+            NullCheck.CheckIfNull(headShootComboText, typeof(TextMeshPro), this, "ComboText");
+        }
+       if(staticHeadShootComboText == null)
+        {
+            staticHeadShootComboText = billboard.transform.Find("StaticComboText").GetComponent<TextMeshPro>();
+            NullCheck.CheckIfNull(staticHeadShootComboText, typeof(TextMeshPro), this, "StaticComboText");
+        }
         staticHeadShootComboText.enabled = false;
         headShootComboText.enabled = false;
         originalScoreFontSize = scoreText.fontSize;
