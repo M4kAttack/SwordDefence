@@ -28,7 +28,7 @@ public class SoundHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(musicResponseGameManager == null)
+        if (musicResponseGameManager == null)
         {
             musicResponseGameManager = GameObject.FindGameObjectWithTag("GameManagers").GetComponent<MusicResponseGameManager>();
             NullCheck.CheckIfNull(musicResponseGameManager, typeof(MusicResponseGameManager), this);

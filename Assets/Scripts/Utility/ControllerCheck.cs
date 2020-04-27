@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public static class ControllerCheck
 {
@@ -13,7 +11,6 @@ public static class ControllerCheck
     }
     public static bool ValidControllerDontThrow(OVRInput.Controller controller)
     {
-        OVRInput.Controller returnController = controller;
         if (controller != OVRInput.Controller.RTouch && controller != OVRInput.Controller.LTouch)
         {
             return false;

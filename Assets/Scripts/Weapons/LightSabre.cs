@@ -32,7 +32,6 @@ public class LightSabre : MonoBehaviour
     private void Update()
     {
         LightSabreVelocity();
-
     }
 
     private void LightSabreVelocity()
@@ -47,8 +46,8 @@ public class LightSabre : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        var bodyPart = collision.gameObject;
-        var root = bodyPart.transform.root;
+        var hitGameObject = collision.gameObject;
+        var root = hitGameObject.transform.root;
         
         if (root.CompareTag("Enemy"))
         {
@@ -57,7 +56,7 @@ public class LightSabre : MonoBehaviour
             {
             hapticFeedback.Vibrate(1, 1, 0.2f, controller);
             var isHeadShot = false;
-            if(bodyPart.CompareTag("Head"))
+            if(hitGameObject.CompareTag("Head"))
             {
                 isHeadShot = true;
             }
