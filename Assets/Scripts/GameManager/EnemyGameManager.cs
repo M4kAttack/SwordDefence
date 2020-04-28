@@ -10,7 +10,7 @@ public class EnemyGameManager : MonoBehaviour
     private List<GameObject> enemies = new List<GameObject>();
     private int enemyListIndex = 0;
     private GameObject[] spawnPositions;
-    private int percentageOfGrenadeThrowers = 5;
+    private int AmountOfGrenadeThrowersModulus = 5;
 
     private int enemiesKilled = 0;
     public int activeEnemies = 0;
@@ -26,7 +26,7 @@ public class EnemyGameManager : MonoBehaviour
     {
         NullCheck.CheckIfNull(jumpingEnemy, typeof(GameObject), this, "jumpingEnemy");
         NullCheck.CheckIfNull(grenadeEnemy, typeof(GameObject), this, "grenadeEnemy");
-        InitializeEnemies(100, percentageOfGrenadeThrowers);
+        InitializeEnemies(100, AmountOfGrenadeThrowersModulus);
         if (spawnPositions == null)
         {
             spawnPositions = GameObject.FindGameObjectsWithTag("SpawnPosition");
@@ -39,14 +39,14 @@ public class EnemyGameManager : MonoBehaviour
 
     }
 
-    public void InitializeEnemies(int amount, int percentageOfGrenadeThrowers)
+    public void InitializeEnemies(int amount, int AmountOfGrenadeThrowersModulus)
     {
         for (int i = 0; i < amount; i++)
         {
             var newJumpingEnemy = Instantiate(jumpingEnemy);
             newJumpingEnemy.SetActive(false);
             enemies.Add(newJumpingEnemy);
-            if (i % percentageOfGrenadeThrowers == 0)
+            if (i % AmountOfGrenadeThrowersModulus == 0)
             {
                 var newGrenadeEnemy = Instantiate(grenadeEnemy);
                 newGrenadeEnemy.SetActive(false);
