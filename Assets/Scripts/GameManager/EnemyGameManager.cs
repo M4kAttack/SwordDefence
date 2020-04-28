@@ -19,7 +19,7 @@ public class EnemyGameManager : MonoBehaviour
 
 
     //SpawnTimer
-    private float spawnTime = 1f;
+    private float spawnTime = 2f;
     private float nextSpawn;
     // Start is called before the first frame update
     void Start()

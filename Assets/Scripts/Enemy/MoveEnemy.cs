@@ -2,10 +2,11 @@
 
 public class MoveEnemy : MonoBehaviour
 {
-    public float speed = 3f;
+    public float speed = 30f;
     private float originalSpeed;
     private Rigidbody rigidbody;
     private GameObject player;
+    private Vector3 movement;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,8 +27,10 @@ public class MoveEnemy : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 movement = transform.forward * speed;
-        rigidbody.velocity = new Vector3(movement.x, rigidbody.velocity.y, movement.z);
+
+        var step = transform.forward.normalized * speed * Time.fixedDeltaTime;
+        rigidbody.MovePosition(transform.position + step);
+
     }
 
 
