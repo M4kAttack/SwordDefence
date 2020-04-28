@@ -21,7 +21,12 @@ public class EnemyHit : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(soundHandler == null)
+
+        //TODO:Remove, this is Temporary until player damage is implemented
+        Invoke("DisableEnemy", 20f);
+        //TODO:Remove
+
+        if (soundHandler == null)
         {
             soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
             NullCheck.CheckIfNull(soundHandler, typeof(SoundHandler), this);
