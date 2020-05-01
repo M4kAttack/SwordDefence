@@ -3,6 +3,7 @@
 public class EnemyAnimations : MonoBehaviour
 {
     private SoundHandler soundHandler;
+    private AudioSource grenadeSource;
     private MoveEnemy moveEnemy;
     private Animator animator;
     private EnemyType enemyType;
@@ -14,6 +15,7 @@ public class EnemyAnimations : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+       
         if(player == null)
         {
             player = GameObject.FindGameObjectWithTag("Player");
@@ -34,6 +36,13 @@ public class EnemyAnimations : MonoBehaviour
             enemyType = EnemyType.Grenade;
             grenadeRigidbody = grenade.GetComponent<Rigidbody>();
             NullCheck.CheckIfNull(grenadeRigidbody, typeof(Rigidbody), this);
+
+            if (grenadeSource == null)
+            {
+                grenadeSource = grenade.GetComponent<AudioSource>();
+                NullCheck.CheckIfNull(grenadeSource, typeof(AudioSource), this);
+            }
+
         }
         if(animator == null)
         {
@@ -96,6 +105,7 @@ public class EnemyAnimations : MonoBehaviour
     {
         grenade.transform.parent = null;
         grenadeRigidbody.isKinematic = false;
+        soundHandler.PlayGrenadeWhistle(grenadeSource);
         grenadeRigidbody.AddForce(-grenade.transform.forward * grenadeThrowForce, ForceMode.VelocityChange);
     }
 }

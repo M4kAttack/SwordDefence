@@ -15,6 +15,7 @@ public class SoundHandler : MonoBehaviour
     private AudioSource lightSabreSourceLeft;
     private AudioSource lightSabreSourceRight;
 
+    public AudioClip grenadeWhistleSound;
     public AudioClip explosionSound;
     public AudioClip jumpStartSound;
     public AudioClip crossbowSound;
@@ -159,6 +160,22 @@ public class SoundHandler : MonoBehaviour
         {
             var sourceToPlay = lightSabre.controller == OVRInput.Controller.RTouch ? lightSabreSourceRight : lightSabreSourceLeft;
             sourceToPlay.PlayOneShot(lightSabreMove);
+        }
+    }
+
+    public void PlayGrenadeWhistle(AudioSource source)
+    {
+        if(source != null)
+        {
+            source.PlayOneShot(grenadeWhistleSound);
+        }
+    }
+
+    public void StopGrenadeWhistle(AudioSource source)
+    {
+        if (source != null)
+        {
+            source.Stop();
         }
     }
 }

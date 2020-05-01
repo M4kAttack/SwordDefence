@@ -4,7 +4,7 @@ public class Grenade : MonoBehaviour
 {
     private HapticFeedback hapticFeedback;
     private SoundHandler soundHandler;
-    private Transform lookDirection;
+    private AudioSource whistleSource;
     //Timer 
     private float explosionTime = 20;
     private float explode;
@@ -13,13 +13,23 @@ public class Grenade : MonoBehaviour
 
     private MeshRenderer meshRenderer;
     private GameObject fxExplosion;
+    private GameObject fxSmoke;
     private Collider blastRadius;
+    private Collider boxCollider;
     private Rigidbody rigidbody;
     private GameObject player;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        if(player == null)
+        if(whistleSource == null)
+        {
+            whistleSource = gameObject.AddComponent<AudioSource>();
+            NullCheck.CheckIfNull(whistleSource, typeof(AudioSource), this, "whistleSource");
+        }
+        whistleSource.spatialBlend = 1;
+        whistleSource.volume = 0.3f;
+        if (player == null)
         { 
             player = GameObject.FindGameObjectWithTag("Player");
             NullCheck.CheckIfNull(player, typeof(GameObject), this, "GameObject");
@@ -34,8 +44,6 @@ public class Grenade : MonoBehaviour
             soundHandler = GameObject.FindGameObjectWithTag("SoundHandler").GetComponent<SoundHandler>();
             NullCheck.CheckIfNull(soundHandler, typeof(SoundHandler), this);
         }
-        lookDirection = player.transform.Find("TrackingSpace/CenterEyeAnchor");
-        NullCheck.CheckIfNull(lookDirection, typeof(GameObject), this, "CenterEyeAnchor");
         if (rigidbody == null)
         {
             rigidbody = GetComponent<Rigidbody>();
@@ -47,7 +55,11 @@ public class Grenade : MonoBehaviour
             NullCheck.CheckIfNull(blastRadius, typeof(SphereCollider), this);
         }
         blastRadius.enabled = false;
-
+        if(boxCollider == null)
+        {
+            boxCollider = GetComponent<BoxCollider>();
+            NullCheck.CheckIfNull(boxCollider, typeof(BoxCollider), this);
+        }
         if(meshRenderer == null)
         {
             meshRenderer = GetComponent<MeshRenderer>();
@@ -59,6 +71,13 @@ public class Grenade : MonoBehaviour
             NullCheck.CheckIfNull(temp, typeof(Transform), this, "FX_Explosion");
             fxExplosion = temp.gameObject;
         }
+       if(fxSmoke == null)
+        {
+            var temp = transform.Find("FX_Smoke");
+            NullCheck.CheckIfNull(temp, typeof(Transform), this, "FX_Smoke");
+            fxSmoke = temp.gameObject;
+        }
+        fxSmoke.SetActive(false);
         fxExplosion.SetActive(false);
         explode = Time.time + explosionTime;
 
@@ -74,6 +93,7 @@ public class Grenade : MonoBehaviour
             exploded = true;
             meshRenderer.enabled = false;
             fxExplosion.SetActive(true);
+            fxSmoke.SetActive(true);
             Invoke("DisbaleBlastRadius", 0.1f);
             Invoke("Disable", 1f);
         }
@@ -101,17 +121,21 @@ public class Grenade : MonoBehaviour
             {
                 enemyHit.KillEnemy(isHeadShot);
             }
-          
-        }
 
+        }
         if(gameobjectHit.CompareTag("LightSabre"))
         {
+            soundHandler.StopGrenadeWhistle(whistleSource);
             var lightSabre = gameobjectHit.GetComponent<LightSabre>();
             if(lightSabre != null)
             {
                 hapticFeedback.Vibrate(1f, 1f, 1f, lightSabre.controller);
-                transform.rotation = gameobjectHit.transform.rotation;
-                rigidbody.AddForce(lookDirection.forward * 20, ForceMode.VelocityChange);
+                transform.parent = gameobjectHit.transform;
+                meshRenderer.enabled = false;
+                boxCollider.enabled = false;
+                rigidbody.isKinematic = true;
+                fxSmoke.SetActive(true);
+                Invoke("Disable", 0.3f);
             }
         }
     }

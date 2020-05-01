@@ -88,6 +88,6 @@ public class EnemyGameManager : MonoBehaviour
 
     private void NextLevel()
     {
-        throw new NotImplementedException();
+        InitializeEnemies(100, 1);
     }
 }

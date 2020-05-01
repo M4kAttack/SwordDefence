@@ -20,6 +20,7 @@ TagManager:
   - RightHandSkeletal
   - Crossbow
   - LightSabre
+  - GrenadeHitByLightsaber
   layers:
   - Default
   - TransparentFX
